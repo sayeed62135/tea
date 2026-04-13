@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jheenat Organic — Premium Organic Tea</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'fraunces': ['"Fraunces"', 'serif'],
+                        'hind': ['"Hind Siliguri"', 'sans-serif'],
+                    },
+                    colors: {
+                        tea: { 50:'#f0faf4',100:'#d8f3dc',200:'#95d5b2',300:'#52b788',400:'#2d8a4e',500:'#1a6b38',600:'#145229',700:'#0d3b1e',800:'#072b15',900:'#041a0d' },
+                        gold: { 50:'#fefbf0',100:'#fdf6e3',200:'#f7ecd4',300:'#f0dbb8',400:'#e6c36a',500:'#d4a843',600:'#b8860b',700:'#946d08' },
+                        cream: '#faf7f0',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Hind Siliguri', sans-serif; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #041a0d; }
+        ::-webkit-scrollbar-thumb { background: #1a6b38; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2d8a4e; }
+
+        /* Preloader */
+        #preloader {
+            position: fixed; inset: 0; z-index: 99999;
+            background: #041a0d;
+            display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 24px;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-leaf {
+            width: 50px; height: 80px;
+            background: linear-gradient(135deg, #2d8a4e, #52b788);
+            border-radius: 5px 80% 5px 80%;
+            animation: loaderSpin 1.5s ease-in-out infinite;
+        }
+        @keyframes loaderSpin {
+            0%,100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(0.8); }
+        }
+
+        /* 3D Hero Scene */
+        .hero-scene {
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+        .parallax-layer {
+            position: absolute; inset: 0;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Floating Tea Leaves */
+        .tea-leaf {
+            position: absolute;
+            border-radius: 5px 80% 5px 80%;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .tea-leaf::after {
+            content: '';
+            position: absolute;
+            top: 20%; left: 48%;
+            width: 1.5px; height: 60%;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+
+        @keyframes floatLeaf {
+            0%,100% { transform: translate3d(0,0,0) rotateX(0deg) rotateY(0deg) rotateZ(var(--rz,0deg)); }
+            25% { transform: translate3d(var(--dx,20px),var(--dy,-30px),var(--dz,50px)) rotateX(45deg) rotateY(90deg) rotateZ(calc(var(--rz,0deg) + 15deg)); }
+            50% { transform: translate3d(calc(var(--dx,20px)*-0.5),calc(var(--dy,-30px)*1.5),calc(var(--dz,50px)*0.8)) rotateX(90deg) rotateY(180deg) rotateZ(calc(var(--rz,0deg) + 30deg)); }
+            75% { transform: translate3d(calc(var(--dx,20px)*0.7),calc(var(--dy,-30px)*0.5),calc(var(--dz,50px)*1.2)) rotateX(135deg) rotateY(270deg) rotateZ(calc(var(--rz,0deg) + 45deg)); }
+        }
+
+        /* 3D Text */
+        .text-3d {
+            text-shadow:
+                0 1px 0 rgba(255,255,255,0.05),
+                0 2px 0 rgba(0,0,0,0.15),
+                0 3px 0 rgba(0,0,0,0.12),
+                0 5px 15px rgba(0,0,0,0.3),
+                0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* 3D Card */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.03,0.98,0.52,0.99), box-shadow 0.4s ease;
+        }
+        .card-3d:hover {
+            box-shadow: 0 25px 60px -12px rgba(0,0,0,0.5), 0 0 40px rgba(26,107,56,0.15);
+        }
+        .card-3d .card-shine {
+            position: absolute; inset: 0; border-radius: inherit;
+            background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.05) 44%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 56%, transparent 60%);
+            transform: translateX(-150%);
+            transition: transform 0.8s ease;
+            pointer-events: none; z-index: 10;
+        }
+        .card-3d:hover .card-shine { transform: translateX(150%); }
+
+        /* 3D Rotating Ring */
+        .leaf-ring {
+            transform-style: preserve-3d;
+            animation: ringRotate 25s linear infinite;
+        }
+        @keyframes ringRotate { 0% { transform: rotateY(0deg) rotateX(15deg); } 100% { transform: rotateY(360deg) rotateX(15deg); } }
+        .leaf-ring .ring-leaf {
+            position: absolute;
+            left: 50%; top: 50%;
+            transform-style: preserve-3d;
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px) translateZ(-80px);
+            transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) translateZ(0);
+        }
+        .reveal-left { transform: translateX(-80px) translateZ(-60px); }
+        .reveal-left.active { transform: translateX(0) translateZ(0); }
+        .reveal-right { transform: translateX(80px) translateZ(-60px); }
+        .reveal-right.active { transform: translateX(0) translateZ(0); }
+        .reveal-scale { transform: scale(0.85) translateZ(-100px); }
+        .reveal-scale.active { transform: scale(1) translateZ(0); }
+
+        /* Gold shimmer */
+        @keyframes goldShimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .gold-shimmer {
+            background: linear-gradient(90deg, #d4a843 0%, #f0dbb8 25%, #e6c36a 50%, #f0dbb8 75%, #d4a843 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldShimmer 4s linear infinite;
+        }
+
+        /* Navbar */
+        .nav-scrolled {
+            background: rgba(4,26,13,0.92) !important;
+            backdrop-filter: blur(20px) !important;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Pricing table */
+        .price-row { transition: background 0.3s ease; }
+        .price-row:hover { background: rgba(26,107,56,0.08); }
+
+        /* Glow dot */
+        .glow-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #52b788;
+            box-shadow: 0 0 10px #52b788, 0 0 20px rgba(82,183,136,0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.6; transform:scale(1.3); } }
+
+        /* Noise overlay */
+        body::after {
+            content:''; position:fixed; inset:0; z-index:99998; pointer-events:none; opacity:0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .mobile-menu.open { transform: translateX(0); }
+
+        /* Stagger children */
+        .stagger-children > * { transition-delay: calc(var(--i,0) * 0.12s); }
+    </style>
+</head>
+<body class="bg-tea-900 text-white">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-leaf"></div>
+        <p class="font-fraunces text-gold-400 text-xl tracking-wide">jheenat Organic</p>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-[9999] transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6 md:px-10">
+            <div class="flex items-center justify-between h-20">
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-tea-400 to-tea-600 flex items-center justify-center shadow-lg group-hover:shadow-tea-500/40 transition-shadow">
+                        <iconify-icon icon="lucide:leaf" class="text-white text-lg"></iconify-icon>
+                    </div>
+                    <span class="font-fraunces text-lg font-semibold text-white">jheenat <span class="text-gold-400">Organic</span></span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#about" class="font-hind text-sm text-white/70 hover:text-gold-400 transition-colors">আমাদের গল্প</a>
+                    <a href="#products" class="font-hind text-sm text-white/70 hover:text-gold-400 transition-colors">পণ্যসমূহ</a>
+                    <a href="#why-us" class="font-hind text-sm text-white/70 hover:text-gold-400 transition-colors">কেন আমরা</a>
+                    <a href="#contact" class="font-hind text-sm text-white/70 hover:text-gold-400 transition-colors">যোগাযোগ</a>
+                    <a href="#products" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-tea-500 to-tea-600 text-white text-sm font-semibold rounded-full hover:shadow-lg hover:shadow-tea-500/30 hover:scale-105 transition-all duration-300">
+                        অর্ডার করুন
+                        <iconify-icon icon="lucide:arrow-right" class="text-base"></iconify-icon>
+                    </a>
+                </div>
+                <button id="menuBtn" class="md:hidden text-white p-2" onclick="toggleMenu()">
+                    <iconify-icon icon="lucide:menu" class="text-2xl"></iconify-icon>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[10000] bg-tea-900/98 backdrop-blur-xl flex flex-col items-center justify-center gap-8">
+        <button class="absolute top-6 right-6 text-white p-2" onclick="toggleMenu()">
+            <iconify-icon icon="lucide:x" class="text-3xl"></iconify-icon>
+        </button>
+        <a href="#about" onclick="toggleMenu()" class="font-fraunces text-2xl text-white hover:text-gold-400 transition-colors">আমাদের গল্প</a>
+        <a href="#products" onclick="toggleMenu()" class="font-fraunces text-2xl text-white hover:text-gold-400 transition-colors">পণ্যসমূহ</a>
+        <a href="#why-us" onclick="toggleMenu()" class="font-fraunces text-2xl text-white hover:text-gold-400 transition-colors">কেন আমরা</a>
+        <a href="#contact" onclick="toggleMenu()" class="font-fraunces text-2xl text-white hover:text-gold-400 transition-colors">যোগাযোগ</a>
+        <a href="#products" onclick="toggleMenu()" class="mt-4 inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-tea-500 to-tea-600 text-white font-semibold rounded-full">অর্ডার করুন</a>
+    </div>
+
+    <!-- ========== HERO ========== -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-tea-900">
+        <!-- BG Image -->
+        <div class="absolute inset-0">
+            <img src="https://picsum.photos/seed/tea-plantation-green/1920/1080.jpg" alt="" class="w-full h-full object-cover opacity-20 scale-110">
+            <div class="absolute inset-0 bg-gradient-to-b from-tea-900/80 via-tea-900/60 to-tea-900"></div>
+        </div>
+
+        <!-- 3D Floating Leaves -->
+        <div id="heroScene" class="hero-scene absolute inset-0">
+            <!-- Leaves will be generated by JS -->
+        </div>
+
+        <!-- 3D Leaf Ring -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none" style="perspective:1000px;">
+            <div class="leaf-ring" id="leafRing" style="width:500px;height:500px;position:relative;"></div>
+        </div>
+
+        <!-- Radial glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-tea-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-gold-500/8 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <!-- Content -->
+        <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-tea-500/30 bg-tea-800/50 backdrop-blur-sm mb-8 reveal">
+                <div class="glow-dot"></div>
+                <span class="font-hind text-sm text-tea-200">শতভাগ জৈবিক · প্রিমিয়াম কোয়ালিটি</span>
+            </div>
+            <h1 class="font-fraunces text-6xl md:text-8xl lg:text-9xl font-bold text-3d leading-[0.9] tracking-tight mb-6 reveal" style="transition-delay:0.15s;">
+                <span class="text-white">jheenat</span><br>
+                <span class="gold-shimmer">Organic</span>
+            </h1>
+            <p class="font-hind text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-4 reveal" style="transition-delay:0.3s;">
+                প্রকৃতির শ্রেষ্ঠ উপহার — সরাসরি চা বাগান থেকে আপনার কাপে
+            </p>
+            <p class="font-fraunces text-base text-white/40 italic mb-10 reveal" style="transition-delay:0.4s;">
+                Nature's Finest Tea, Delivered to Your Cup
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 reveal" style="transition-delay:0.5s;">
+                <a href="#products" class="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-tea-500 to-tea-600 text-white font-hind font-semibold rounded-full hover:shadow-2xl hover:shadow-tea-500/30 hover:scale-105 transition-all duration-300">
+                    পণ্য দেখুন
+                    <iconify-icon icon="lucide:arrow-down-right" class="text-xl group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></iconify-icon>
+                </a>
+                <a href="#about" class="inline-flex items-center gap-3 px-8 py-4 border border-white/20 text-white font-hind font-medium rounded-full hover:bg-white/10 hover:border-white/40 transition-all duration-300">
+                    <iconify-icon icon="lucide:play-circle" class="text-xl text-gold-400"></iconify-icon>
+                    আমাদের গল্প
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 reveal" style="transition-delay:0.8s;">
+            <span class="font-hind text-xs text-white/30 tracking-widest uppercase">Scroll</span>
+            <div class="w-5 h-8 border border-white/20 rounded-full flex items-start justify-center p-1">
+                <div class="w-1 h-2 bg-white/50 rounded-full animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== STATS BAR ========== -->
+    <section class="relative z-20 -mt-1 bg-tea-800/80 backdrop-blur-xl border-y border-tea-600/20">
+        <div class="max-w-7xl mx-auto px-6 md:px-10 py-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="text-center reveal">
+                <div class="font-fraunces text-3xl md:text-4xl font-bold text-gold-400 mb-1" data-count="100">0%</div>
+                <p class="font-hind text-sm text-white/50">জৈবিক চা</p>
+            </div>
+            <div class="text-center reveal" style="transition-delay:0.1s;">
+                <div class="font-fraunces text-3xl md:text-4xl font-bold text-gold-400 mb-1" data-count="500">0+</div>
+                <p class="font-hind text-sm text-white/50">সন্তুষ্ট গ্রাহক</p>
+            </div>
+            <div class="text-center reveal" style="transition-delay:0.2s;">
+                <div class="font-fraunces text-3xl md:text-4xl font-bold text-gold-400 mb-1" data-count="4">0</div>
+                <p class="font-hind text-sm text-white/50">প্রিমিয়াম ভ্যারাইটি</p>
+            </div>
+            <div class="text-center reveal" style="transition-delay:0.3s;">
+                <div class="font-fraunces text-3xl md:text-4xl font-bold text-gold-400 mb-1">প্রতিদিন</div>
+                <p class="font-hind text-sm text-white/50">ফ্রেশ প্যাকেজিং</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ABOUT ========== -->
+    <section id="about" class="relative py-24 md:py-32 bg-cream overflow-hidden">
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-tea-200/30 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-6 md:px-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Image -->
+                <div class="relative reveal-left">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl" style="perspective:800px;">
+                        <img src="https://picsum.photos/seed/tea-leaves-close/800/1000.jpg" alt="jheenat Organic Tea" class="w-full h-[500px] md:h-[600px] object-cover card-3d rounded-3xl">
+                        <div class="card-shine rounded-3xl"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-tea-900/60 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
+                                <iconify-icon icon="lucide:award" class="text-gold-400"></iconify-icon>
+                                <span class="font-hind text-sm text-white">Certified Organic</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Floating badge -->
+                    <div class="absolute -top-4 -right-4 md:-top-6 md:-right-6 w-28 h-28 md:w-36 md:h-36 bg-gradient-to-br from-gold-500 to-gold-600 rounded-2xl md:rounded-3xl flex flex-col items-center justify-center shadow-xl shadow-gold-500/30 rotate-6 hover:rotate-0 transition-transform duration-500">
+                        <span class="font-fraunces text-3xl md:text-4xl font-bold text-white">১০০%</span>
+                        <span class="font-hind text-xs text-white/80">জৈবিক</span>
+                    </div>
+                </div>
+                <!-- Text -->
+                <div class="reveal-right">
+                    <span class="font-hind text-sm font-semibold text-tea-600 tracking-widest uppercase mb-4 block">আমাদের গল্প</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-tea-900 leading-tight mb-6">
+                        প্রকৃতির কাছ থেকে,<br>
+                        <span class="text-tea-500">সরাসরি আপনার কাছে</span>
+                    </h2>
+                    <p class="font-hind text-base md:text-lg text-gray-600 leading-relaxed mb-6">
+                        jheenat Organic হলো বাংলাদেশের পাহাড়ি চা বাগান থেকে সংগ্রহীত শতভাগ জৈবিক চা। কোনো রাসায়নিক সার বা কীটনাশক ছাড়াই, প্রকৃতির নিজস্ব পদ্ধতিতে চাষ করা এই চা আপনার স্বাস্থ্যের জন্য সবচেয়ে নিরাপদ।
+                    </p>
+                    <p class="font-fraunces text-base text-gray-400 italic mb-8">
+                        Handpicked from the finest tea gardens of Bangladesh, free from chemicals, delivered fresh to your doorstep.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-tea-100 flex items-center justify-center flex-shrink-0">
+                                <iconify-icon icon="lucide:shield-check" class="text-tea-600 text-lg"></iconify-icon>
+                            </div>
+                            <div>
+                                <p class="font-hind text-sm font-semibold text-tea-900">কীটনাশকমুক্ত</p>
+                                <p class="font-hind text-xs text-gray-500">প্রমাণিত জৈবিক</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-tea-100 flex items-center justify-center flex-shrink-0">
+                                <iconify-icon icon="lucide:truck" class="text-tea-600 text-lg"></iconify-icon>
+                            </div>
+                            <div>
+                                <p class="font-hind text-sm font-semibold text-tea-900">দ্রুত ডেলিভারি</p>
+                                <p class="font-hind text-xs text-gray-500">সারাদেশে</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-tea-100 flex items-center justify-center flex-shrink-0">
+                                <iconify-icon icon="lucide:heart" class="text-tea-600 text-lg"></iconify-icon>
+                            </div>
+                            <div>
+                                <p class="font-hind text-sm font-semibold text-tea-900">স্বাস্থ্যকর</p>
+                                <p class="font-hind text-xs text-gray-500">অ্যান্টিঅক্সিড্যান্ট সমৃদ্ধ</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-tea-100 flex items-center justify-center flex-shrink-0">
+                                <iconify-icon icon="lucide:sparkles" class="text-tea-600 text-lg"></iconify-icon>
+                            </div>
+                            <div>
+                                <p class="font-hind text-sm font-semibold text-tea-900">প্রিমিয়াম</p>
+                                <p class="font-hind text-xs text-gray-500">সেরা মানের চা</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PRODUCTS ========== -->
+    <section id="products" class="relative py-24 md:py-32 bg-tea-900 overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-tea-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-6 md:px-10">
+            <div class="text-center mb-16">
+                <span class="font-hind text-sm font-semibold text-gold-400 tracking-widest uppercase mb-4 block reveal">আমাদের পণ্যসমূহ</span>
+                <h2 class="font-fraunces text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4 reveal" style="transition-delay:0.1s;">
+                    Premium Organic <span class="text-tea-300">Tea Collection</span>
+                </h2>
+                <p class="font-hind text-base text-white/50 max-w-xl mx-auto reveal" style="transition-delay:0.2s;">
+                    চারটি স্বতন্ত্র ভ্যারাইটি — প্রতিটি আপনার স্বাদের জন্য অনন্য
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8" style="perspective:1200px;">
+                <!-- Product 1 -->
+                <div class="card-3d relative rounded-3xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 overflow-hidden group reveal" style="transition-delay:0s;">
+                    <div class="card-shine"></div>
+                    <div class="flex flex-col md:flex-row">
+                        <div class="relative md:w-2/5 h-56 md:h-auto overflow-hidden">
+                            <img src="https://picsum.photos/seed/raw-tea-leaves/600/800.jpg" alt="Premium RAW" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-tea-900/50 hidden md:block"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-tea-900/80 to-transparent md:hidden"></div>
+                            <div class="absolute top-4 left-4">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-tea-500/90 backdrop-blur-sm rounded-full text-xs font-hind font-semibold text-white">
+                                    <iconify-icon icon="lucide:star" class="text-gold-300 text-xs"></iconify-icon> PREMIUM
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-fraunces text-2xl font-bold text-white mb-1">Premium (RAW)</h3>
+                                <p class="font-fraunces text-sm text-white/40 italic mb-4">Unprocessed Natural Tea</p>
+                                <p class="font-hind text-sm text-white/50 mb-5">কোনো প্রক্রিয়াকরণ ছাড়াই সরাসরি বাগান থেকে সংগ্রহীত কাঁচা চা পাতা</p>
+                                <div class="space-y-2">
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">১০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">৭৫ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">২০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">১৪০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">৪০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">২৭০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg bg-tea-500/10 border border-tea-500/20">
+                                        <span class="font-hind text-sm text-white/90 font-semibold">১ কেজি</span>
+                                        <span class="font-fraunces font-bold text-gold-300 text-lg">৬৫০ ৳</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#contact" class="mt-6 inline-flex items-center justify-center gap-2 w-full py-3 bg-white/10 hover:bg-tea-500 text-white font-hind font-semibold rounded-xl border border-white/10 hover:border-tea-500 transition-all duration-300">
+                                অর্ডার করুন <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="card-3d relative rounded-3xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 overflow-hidden group reveal" style="transition-delay:0.15s;">
+                    <div class="card-shine"></div>
+                    <div class="flex flex-col md:flex-row">
+                        <div class="relative md:w-2/5 h-56 md:h-auto overflow-hidden">
+                            <img src="https://picsum.photos/seed/gbop-tea/600/800.jpg" alt="Premium GBOP" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-tea-900/50 hidden md:block"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-tea-900/80 to-transparent md:hidden"></div>
+                            <div class="absolute top-4 left-4">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-tea-500/90 backdrop-blur-sm rounded-full text-xs font-hind font-semibold text-white">
+                                    <iconify-icon icon="lucide:star" class="text-gold-300 text-xs"></iconify-icon> PREMIUM
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-fraunces text-2xl font-bold text-white mb-1">Premium GBOP</h3>
+                                <p class="font-fraunces text-sm text-white/40 italic mb-4">Golden Broken Orange Pekoe</p>
+                                <p class="font-hind text-sm text-white/50 mb-5">সূক্ষ্মভাবে প্রক্রিয়াজাত গোল্ডেন ব্রোকেন অরেঞ্জ পিকো চা</p>
+                                <div class="space-y-2">
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">১০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">৮৫ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">২০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">১৬০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">৪০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">৩০০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg bg-tea-500/10 border border-tea-500/20">
+                                        <span class="font-hind text-sm text-white/90 font-semibold">১ কেজি</span>
+                                        <span class="font-fraunces font-bold text-gold-300 text-lg">৭২০ ৳</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#contact" class="mt-6 inline-flex items-center justify-center gap-2 w-full py-3 bg-white/10 hover:bg-tea-500 text-white font-hind font-semibold rounded-xl border border-white/10 hover:border-tea-500 transition-all duration-300">
+                                অর্ডার করুন <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="card-3d relative rounded-3xl bg-gradient-to-br from-gold-500/[0.08] to-white/[0.02] border border-gold-500/20 overflow-hidden group reveal" style="transition-delay:0s;">
+                    <div class="card-shine"></div>
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-gold-500/10 rounded-full blur-[60px] pointer-events-none"></div>
+                    <div class="flex flex-col md:flex-row relative z-10">
+                        <div class="relative md:w-2/5 h-56 md:h-auto overflow-hidden">
+                            <img src="https://picsum.photos/seed/bop-gold-tea/600/800.jpg" alt="Gold Prime BOP" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-tea-900/50 hidden md:block"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-tea-900/80 to-transparent md:hidden"></div>
+                            <div class="absolute top-4 left-4">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-gold-500 to-gold-600 rounded-full text-xs font-hind font-semibold text-white shadow-lg shadow-gold-500/30">
+                                    <iconify-icon icon="lucide:crown" class="text-white text-xs"></iconify-icon> GOLD
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-fraunces text-2xl font-bold text-white mb-1">Gold Prime Tea (BOP)</h3>
+                                <p class="font-fraunces text-sm text-white/40 italic mb-4">Broken Orange Pekoe — Gold Grade</p>
+                                <p class="font-hind text-sm text-white/50 mb-5">গোল্ড গ্রেড ব্রোকেন অরেঞ্জ পিকো — সমৃদ্ধ স্বাদ ও সুগন্ধের জন্য বিখ্যাত</p>
+                                <div class="space-y-2">
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">১০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">১১০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">২০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">২১০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">৪০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">৪০০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg bg-gold-500/10 border border-gold-500/20">
+                                        <span class="font-hind text-sm text-white/90 font-semibold">১ কেজি</span>
+                                        <span class="font-fraunces font-bold text-gold-300 text-lg">৯৫০ ৳</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#contact" class="mt-6 inline-flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-tea-900 font-hind font-bold rounded-xl transition-all duration-300 shadow-lg shadow-gold-500/20 hover:shadow-gold-500/40">
+                                অর্ডার করুন <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="card-3d relative rounded-3xl bg-gradient-to-br from-gold-500/[0.08] to-white/[0.02] border border-gold-500/20 overflow-hidden group reveal" style="transition-delay:0.15s;">
+                    <div class="card-shine"></div>
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-gold-500/10 rounded-full blur-[60px] pointer-events-none"></div>
+                    <div class="flex flex-col md:flex-row relative z-10">
+                        <div class="relative md:w-2/5 h-56 md:h-auto overflow-hidden">
+                            <img src="https://picsum.photos/seed/ctc-tea-gold/600/800.jpg" alt="Gold Prime C" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-tea-900/50 hidden md:block"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-tea-900/80 to-transparent md:hidden"></div>
+                            <div class="absolute top-4 left-4">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-gold-500 to-gold-600 rounded-full text-xs font-hind font-semibold text-white shadow-lg shadow-gold-500/30">
+                                    <iconify-icon icon="lucide:crown" class="text-white text-xs"></iconify-icon> GOLD
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-fraunces text-2xl font-bold text-white mb-1">Gold Prime (C)</h3>
+                                <p class="font-fraunces text-sm text-white/40 italic mb-4">CTC Gold — Supreme Quality</p>
+                                <p class="font-hind text-sm text-white/50 mb-5">আমাদের সবচেয়ে প্রিমিয়াম CTC চা — গভীর রঙ ও তীব্র স্বাদের জন্য অতুলনীয়</p>
+                                <div class="space-y-2">
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">১০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">১২০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">২০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">২৩০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg">
+                                        <span class="font-hind text-sm text-white/70">৪০০ গ্রাম</span>
+                                        <span class="font-fraunces font-bold text-gold-400">৪৪০ ৳</span>
+                                    </div>
+                                    <div class="price-row flex justify-between items-center px-3 py-2 rounded-lg bg-gold-500/10 border border-gold-500/20">
+                                        <span class="font-hind text-sm text-white/90 font-semibold">১ কেজি</span>
+                                        <span class="font-fraunces font-bold text-gold-300 text-lg">১০৫০ ৳</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#contact" class="mt-6 inline-flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-tea-900 font-hind font-bold rounded-xl transition-all duration-300 shadow-lg shadow-gold-500/20 hover:shadow-gold-500/40">
+                                অর্ডার করুন <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== WHY US ========== -->
+    <section id="why-us" class="relative py-24 md:py-32 bg-cream overflow-hidden">
+        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gold-200/30 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-6 md:px-10">
+            <div class="text-center mb-16">
+                <span class="font-hind text-sm font-semibold text-tea-600 tracking-widest uppercase mb-4 block reveal">কেন আমরাই সেরা</span>
+                <h2 class="font-fraunces text-4xl md:text-5xl lg:text-6xl font-bold text-tea-900 leading-tight reveal" style="transition-delay:0.1s;">
+                    The jheenat <span class="text-tea-500">Difference</span>
+                </h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card-3d relative p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500 reveal" style="transition-delay:0s;">
+                    <div class="card-shine"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-tea-100 to-tea-200 flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:leaf" class="text-tea-600 text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-tea-900 mb-3">শতভাগ জৈবিক</h3>
+                    <p class="font-hind text-sm text-gray-500 leading-relaxed">কোনো রাসায়নিক সার, কীটনাশক বা কৃত্রিম রং ব্যবহার করা হয় না। সম্পূর্ণ প্রাকৃতিক পদ্ধতিতে চাষকৃত।</p>
+                </div>
+                <div class="card-3d relative p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500 reveal" style="transition-delay:0.1s;">
+                    <div class="card-shine"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-100 to-gold-200 flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:hand-metal" class="text-gold-600 text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-tea-900 mb-3">হাতে তোলা</h3>
+                    <p class="font-hind text-sm text-gray-500 leading-relaxed">প্রতিটি চা পাতা অভিজ্ঞ শ্রমিকদের দ্বারা হাতে তোলা হয়, যা সর্বোচ্চ মান নিশ্চিত করে।</p>
+                </div>
+                <div class="card-3d relative p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500 reveal" style="transition-delay:0.2s;">
+                    <div class="card-shine"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-tea-100 to-tea-200 flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:package-check" class="text-tea-600 text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-tea-900 mb-3">ফ্রেশ প্যাকেজিং</h3>
+                    <p class="font-hind text-sm text-gray-500 leading-relaxed">অর্ডার প্রাপ্তির পর প্রতিদিন নতুন করে প্যাক করা হয়, যাতে সর্বোচ্চ তাজাভাব বজায় থাকে।</p>
+                </div>
+                <div class="card-3d relative p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500 reveal" style="transition-delay:0s;">
+                    <div class="card-shine"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-100 to-gold-200 flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:map-pin" class="text-gold-600 text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-tea-900 mb-3">সরাসরি বাগান থেকে</h3>
+                    <p class="font-hind text-sm text-gray-500 leading-relaxed">মধ্যস্বত্বভোগী ছাড়া সরাসরি চা বাগান থেকে আপনার কাছে পৌঁছে যায়।</p>
+                </div>
+                <div class="card-3d relative p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500 reveal" style="transition-delay:0.1s;">
+                    <div class="card-shine"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-tea-100 to-tea-200 flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:shield-check" class="text-tea-600 text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-tea-900 mb-3">মান নিশ্চয়তা</h3>
+                    <p class="font-hind text-sm text-gray-500 leading-relaxed">প্রতিটি ব্যাচ ল্যাব টেস্টেড এবং মান নিয়ন্ত্রণ বিভাগ কর্তৃক যাচাইকৃত।</p>
+                </div>
+                <div class="card-3d relative p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-shadow duration-500 reveal" style="transition-delay:0.2s;">
+                    <div class="card-shine"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-100 to-gold-200 flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:heart-handshake" class="text-gold-600 text-2xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-tea-900 mb-3">গ্রাহক সন্তুষ্টি</h3>
+                    <p class="font-hind text-sm text-gray-500 leading-relaxed">৫০০+ সন্তুষ্ট গ্রাহক আমাদের মানের প্রমাণ। পণ্যে সন্তুষ্ট না হলে ফেরত দেওয়ার সুবিধা।</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PROCESS ========== -->
+    <section class="relative py-24 md:py-32 bg-tea-800 overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px); background-size: 30px 30px;"></div>
+        </div>
+        <div class="max-w-5xl mx-auto px-6 md:px-10 relative z-10">
+            <div class="text-center mb-16">
+                <span class="font-hind text-sm font-semibold text-gold-400 tracking-widest uppercase mb-4 block reveal">প্রক্রিয়া</span>
+                <h2 class="font-fraunces text-4xl md:text-5xl font-bold text-white leading-tight reveal" style="transition-delay:0.1s;">
+                    From Garden <span class="text-tea-300">to Cup</span>
+                </h2>
+            </div>
+            <div class="relative">
+                <!-- Timeline line -->
+                <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-tea-500 via-gold-500 to-tea-500 md:-translate-x-px"></div>
+
+                <!-- Step 1 -->
+                <div class="relative flex flex-col md:flex-row items-start mb-16 reveal">
+                    <div class="md:w-1/2 md:pr-16 md:text-right pl-16 md:pl-0">
+                        <span class="text-6xl font-bold text-white/5">০১</span>
+                        <h3 class="text-xl font-bold text-white mb-2 -mt-8">চা বাগানে চাষ</h3>
+                        <p class="font-hind text-sm text-white/50">জৈবিক পদ্ধতিতে যত্নসহকারে চা গাছ লালন ও পরিচর্যা করা হয়।</p>
+                    </div>
+                    <div class="absolute left-3 md:left-1/2 md:-translate-x-1/2 w-7 h-7 rounded-full bg-tea-500 border-4 border-tea-800 shadow-lg shadow-tea-500/30 flex items-center justify-center">
+                        <iconify-icon icon="lucide:sprout" class="text-white text-xs"></iconify-icon>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 hidden md:block"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative flex flex-col md:flex-row items-start mb-16 reveal" style="transition-delay:0.15s;">
+                    <div class="md:w-1/2 md:pr-16 hidden md:block"></div>
+                    <div class="absolute left-3 md:left-1/2 md:-translate-x-1/2 w-7 h-7 rounded-full bg-gold-500 border-4 border-tea-800 shadow-lg shadow-gold-500/30 flex items-center justify-center">
+                        <iconify-icon icon="lucide:hand-metal" class="text-white text-xs"></iconify-icon>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-16">
+                        <span class="text-6xl font-bold text-white/5">০২</span>
+                        <h3 class="text-xl font-bold text-white mb-2 -mt-8">হাতে তোলা</h3>
+                        <p class="font-hind text-sm text-white/50">অভিজ্ঞ শ্রমিকরা সূক্ষ্মভাবে সেরা চা পাতাগুলো হাতে তোলেন।</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative flex flex-col md:flex-row items-start mb-16 reveal" style="transition-delay:0.3s;">
+                    <div class="md:w-1/2 md:pr-16 md:text-right pl-16 md:pl-0">
+                        <span class="text-6xl font-bold text-white/5">০৩</span>
+                        <h3 class="text-xl font-bold text-white mb-2 -mt-8">প্রক্রিয়াজাতকরণ</h3>
+                        <p class="font-hind text-sm text-white/50">ঐতিহ্যবাহী পদ্ধতিতে উইদ্রিং, রোলিং, ফার্মেন্টেশন ও ড্রাইং করা হয়।</p>
+                    </div>
+                    <div class="absolute left-3 md:left-1/2 md:-translate-x-1/2 w-7 h-7 rounded-full bg-tea-500 border-4 border-tea-800 shadow-lg shadow-tea-500/30 flex items-center justify-center">
+                        <iconify-icon icon="lucide:flame" class="text-white text-xs"></iconify-icon>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 hidden md:block"></div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative flex flex-col md:flex-row items-start reveal" style="transition-delay:0.45s;">
+                    <div class="md:w-1/2 md:pr-16 hidden md:block"></div>
+                    <div class="absolute left-3 md:left-1/2 md:-translate-x-1/2 w-7 h-7 rounded-full bg-gold-500 border-4 border-tea-800 shadow-lg shadow-gold-500/30 flex items-center justify-center">
+                        <iconify-icon icon="lucide:package" class="text-white text-xs"></iconify-icon>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-16">
+                        <span class="text-6xl font-bold text-white/5">০৪</span>
+                        <h3 class="text-xl font-bold text-white mb-2 -mt-8">প্যাকেজিং ও ডেলিভারি</h3>
+                        <p class="font-hind text-sm text-white/50">ফুড-গ্রেড প্যাকেজিংয়ে সিল করে দ্রুততম সময়ে আপনার দোরগোড়ায় পৌঁছে দেওয়া হয়।</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS ========== -->
+    <section class="relative py-24 md:py-32 bg-cream overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 md:px-10">
+            <div class="text-center mb-16">
+                <span class="font-hind text-sm font-semibold text-tea-600 tracking-widest uppercase mb-4 block reveal">গ্রাহকদের মতামত</span>
+                <h2 class="font-fraunces text-4xl md:text-5xl font-bold text-tea-900 leading-tight reveal" style="transition-delay:0.1s;">
+                    What Our <span class="text-tea-500">Customers Say</span>
+                </h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card-3d relative p-8 rounded-3xl bg-white border border-gray-100 shadow-sm reveal" style="transition-delay:0s;">
+                    <div class="card-shine"></div>
+                    <div class="flex gap-1 mb-4">
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                    </div>
+                    <p class="font-hind text-sm text-gray-600 leading-relaxed mb-6">"অসাধারণ স্বাদ! Gold Prime BOP এর স্বাদ আমি আগে কখনো পাইনি। প্রতিদিন সকালে এই চায়ে দিন শুরু করি। সত্যিই প্রিমিয়াম মানের।"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-tea-400 to-tea-600 flex items-center justify-center text-white font-hind font-bold text-sm">র</div>
+                        <div>
+                            <p class="font-hind text-sm font-semibold text-tea-900">রহিমা বেগম</p>
+                            <p class="font-hind text-xs text-gray-400">ঢাকা</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-3d relative p-8 rounded-3xl bg-white border border-gray-100 shadow-sm reveal" style="transition-delay:0.15s;">
+                    <div class="card-shine"></div>
+                    <div class="flex gap-1 mb-4">
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                    </div>
+                    <p class="font-hind text-sm text-gray-600 leading-relaxed mb-6">"Premium RAW চা আমার খুব পছন্দ। কোনো কৃত্রিম গন্ধ নেই, সম্পূর্ণ প্রাকৃতিক। পরিবারের সবাই এখন শুধু jheenat চাই পান।"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-white font-hind font-bold text-sm">ক</div>
+                        <div>
+                            <p class="font-hind text-sm font-semibold text-tea-900">কামরুল হাসান</p>
+                            <p class="font-hind text-xs text-gray-400">চট্টগ্রাম</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-3d relative p-8 rounded-3xl bg-white border border-gray-100 shadow-sm reveal" style="transition-delay:0.3s;">
+                    <div class="card-shine"></div>
+                    <div class="flex gap-1 mb-4">
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                        <iconify-icon icon="lucide:star" class="text-gold-500"></iconify-icon>
+                    </div>
+                    <p class="font-hind text-sm text-gray-600 leading-relaxed mb-6">"১ কেজি Gold Prime C নিয়েছিলাম। রঙ ও স্বাদ দুটোই চমৎকার। দোকানের চায়ের সাথে তুলনাই হয় না। ধন্যবাদ jheenat Organic!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-tea-400 to-tea-600 flex items-center justify-center text-white font-hind font-bold text-sm">ফ</div>
+                        <div>
+                            <p class="font-hind text-sm font-semibold text-tea-900">ফাতেমা আক্তার</p>
+                            <p class="font-hind text-xs text-gray-400">সিলেট</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA / CONTACT ========== -->
+    <section id="contact" class="relative py-24 md:py-32 bg-tea-900 overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://picsum.photos/seed/tea-cup-steam/1920/800.jpg" alt="" class="w-full h-full object-cover opacity-10">
+            <div class="absolute inset-0 bg-gradient-to-b from-tea-900 via-tea-900/95 to-tea-900"></div>
+        </div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-tea-500/10 rounded-full blur-[150px] pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-6 md:px-10 relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold-500/30 bg-gold-500/5 mb-8 reveal">
+                <iconify-icon icon="lucide:phone" class="text-gold-400 text-sm"></iconify-icon>
+                <span class="font-hind text-sm text-gold-300">এখনই অর্ডার করুন</span>
+            </div>
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 reveal" style="transition-delay:0.1s;">
+                আজই উপভোগ করুন<br>
+                <span class="gold-shimmer">প্রিমিয়াম জৈবিক চা</span>
+            </h2>
+            <p class="font-hind text-lg text-white/50 max-w-xl mx-auto mb-10 reveal" style="transition-delay:0.2s;">
+                ফোন কল বা WhatsApp এ মেসেজ করে সহজেই অর্ডার করুন। সারাদেশে ডেলিভারি সুবিধা রয়েছে।
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 reveal" style="transition-delay:0.3s;">
+                <a href="tel:+8801XXXXXXXXX" class="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-tea-500 to-tea-600 text-white font-hind font-semibold rounded-full hover:shadow-2xl hover:shadow-tea-500/30 hover:scale-105 transition-all duration-300">
+                    <iconify-icon icon="lucide:phone" class="text-xl"></iconify-icon>
+                    ফোন করুন
+                </a>
+                <a href="https://wa.me/8801XXXXXXXXX" target="_blank" class="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white font-hind font-semibold rounded-full hover:shadow-2xl hover:shadow-green-500/30 hover:scale-105 transition-all duration-300">
+                    <iconify-icon icon="lucide:message-circle" class="text-xl"></iconify-icon>
+                    WhatsApp
+                </a>
+            </div>
+            <div class="grid sm:grid-cols-3 gap-6 max-w-2xl mx-auto reveal" style="transition-delay:0.45s;">
+                <div class="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                    <iconify-icon icon="lucide:truck" class="text-tea-300 text-2xl mb-2"></iconify-icon>
+                    <p class="font-hind text-sm text-white/70">সারাদেশে</p>
+                    <p class="font-hind text-xs text-white/40">ডেলিভারি</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                    <iconify-icon icon="lucide:banknote" class="text-gold-400 text-2xl mb-2"></iconify-icon>
+                    <p class="font-hind text-sm text-white/70">ক্যাশ অন</p>
+                    <p class="font-hind text-xs text-white/40">পেমেন্ট</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                    <iconify-icon icon="lucide:refresh-cw" class="text-tea-300 text-2xl mb-2"></iconify-icon>
+                    <p class="font-hind text-sm text-white/70">রিটার্ন</p>
+                    <p class="font-hind text-xs text-white/40">গ্যারান্টি</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-tea-950 border-t border-tea-800/50">
+        <div class="max-w-7xl mx-auto px-6 md:px-10 py-16">
+            <div class="grid md:grid-cols-4 gap-10 mb-12">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-tea-400 to-tea-600 flex items-center justify-center">
+                            <iconify-icon icon="lucide:leaf" class="text-white text-lg"></iconify-icon>
+                        </div>
+                        <span class="font-fraunces text-lg font-semibold text-white">jheenat <span class="text-gold-400">Organic</span></span>
+                    </div>
+                    <p class="font-hind text-sm text-white/40 leading-relaxed max-w-sm mb-6">
+                        বাংলাদেশের পাহাড়ি চা বাগান থেকে সংগ্রহীত শতভাগ জৈবিক প্রিমিয়াম চা। প্রকৃতির শ্রেষ্ঠ উপহার — সরাসরি আপনার কাপে।
+                    </p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-tea-400 hover:border-tea-500/50 transition-all">
+                            <iconify-icon icon="lucide:facebook" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-tea-400 hover:border-tea-500/50 transition-all">
+                            <iconify-icon icon="lucide:instagram" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-tea-400 hover:border-tea-500/50 transition-all">
+                            <iconify-icon icon="lucide:youtube" class="text-lg"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-fraunces text-sm font-semibold text-white mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="font-hind text-sm text-white/40 hover:text-gold-400 transition-colors">আমাদের গল্প</a></li>
+                        <li><a href="#products" class="font-hind text-sm text-white/40 hover:text-gold-400 transition-colors">পণ্যসমূহ</a></li>
+                        <li><a href="#why-us" class="font-hind text-sm text-white/40 hover:text-gold-400 transition-colors">কেন আমরা</a></li>
+                        <li><a href="#contact" class="font-hind text-sm text-white/40 hover:text-gold-400 transition-colors">যোগাযোগ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-fraunces text-sm font-semibold text-white mb-4">যোগাযোগ</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2">
+                            <iconify-icon icon="lucide:phone" class="text-tea-400 mt-0.5"></iconify-icon>
+                            <span class="font-hind text-sm text-white/40">+880 1XXX-XXXXXX</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <iconify-icon icon="lucide:mail" class="text-tea-400 mt-0.5"></iconify-icon>
+                            <span class="font-hind text-sm text-white/40">info@jheenat.com</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <iconify-icon icon="lucide:map-pin" class="text-tea-400 mt-0.5"></iconify-icon>
+                            <span class="font-hind text-sm text-white/40">সিলেট, বাংলাদেশ</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-tea-800/50 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="font-hind text-xs text-white/30">© ২০২৫ jheenat Organic। সর্বস্বত্ব সংরক্ষিত।</p>
+                <p class="font-fraunces text-xs text-white/20 italic">Crafted with love for tea lovers</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== PRELOADER =====
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+                // Trigger hero reveals
+                document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('active'));
+            }, 1800);
+        });
+
+        // ===== MOBILE MENU =====
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        }
+
+        // ===== NAVBAR SCROLL =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        });
+
+        // ===== 3D FLOATING LEAVES =====
+        const heroScene = document.getElementById('heroScene');
+        const leafCount = 18;
+        for (let i = 0; i < leafCount; i++) {
+            const leaf = document.createElement('div');
+            leaf.className = 'tea-leaf';
+            const size = 15 + Math.random() * 45;
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const hue = 130 + Math.random() * 30;
+            const sat = 40 + Math.random() * 30;
+            const light = 25 + Math.random() * 25;
+            const duration = 18 + Math.random() * 25;
+            const delay = Math.random() * -30;
+            const dx = (Math.random() - 0.5) * 80;
+            const dy = (Math.random() - 0.5) * 60;
+            const dz = (Math.random() - 0.5) * 150;
+            const rz = Math.random() * 360;
+
+            leaf.style.cssText = `
+                width:${size}px; height:${size*1.6}px;
+                left:${x}%; top:${y}%;
+                background: linear-gradient(135deg, hsl(${hue},${sat}%,${light}%), hsl(${hue},${sat-10}%,${light+15}%));
+                border-radius: ${3+Math.random()*5}px ${60+Math.random()*25}% ${3+Math.random()*5}px ${60+Math.random()*25}%;
+                --dx:${dx}px; --dy:${dy}px; --dz:${dz}px; --rz:${rz}deg;
+                animation: floatLeaf ${duration}s ${delay}s ease-in-out infinite;
+                opacity: ${0.06 + Math.random()*0.12};
+            `;
+            heroScene.appendChild(leaf);
+        }
+
+        // ===== 3D LEAF RING =====
+        const leafRing = document.getElementById('leafRing');
+        const ringLeafCount = 14;
+        for (let i = 0; i < ringLeafCount; i++) {
+            const angle = (360 / ringLeafCount) * i;
+            const ringLeaf = document.createElement('div');
+            ringLeaf.className = 'ring-leaf';
+            const size = 16 + Math.random() * 14;
+            const hue = 130 + Math.random() * 30;
+            ringLeaf.style.cssText = `
+                transform: rotateY(${angle}deg) translateZ(180px) rotateX(${Math.random()*30-15}deg);
+            `;
+            ringLeaf.innerHTML = `
+                <div style="
+                    width:${size}px; height:${size*1.6}px;
+                    background: linear-gradient(135deg, hsl(${hue},50%,35%), hsl(${hue},40%,50%));
+                    border-radius: 4px 75% 4px 75%;
+                    opacity: 0.35;
+                "></div>
+            `;
+            leafRing.appendChild(ringLeaf);
+        }
+
+        // ===== MOUSE PARALLAX =====
+        const hero = document.getElementById('hero');
+        if (window.innerWidth > 768) {
+            hero.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 2;
+                const y = (e.clientY / window.innerHeight - 0.5) * 2;
+                heroScene.style.transform = `rotateY(${x * 3}deg) rotateX(${-y * 2}deg)`;
+                leafRing.style.transform = `rotateY(${x * 8}deg) rotateX(${-y * 5 + 15}deg)`;
+            });
+            hero.addEventListener('mouseleave', () => {
+                heroScene.style.transform = 'rotateY(0deg) rotateX(0deg)';
+                leafRing.style.transform = 'rotateY(0deg) rotateX(15deg)';
+            });
+        }
+
+        // ===== 3D CARD TILT =====
+        if (window.innerWidth > 768) {
+            document.querySelectorAll('.card-3d').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -8;
+                    const rotateY = ((x - centerX) / centerX) * 8;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02,1.02,1.02)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+                });
+            });
+        }
+
+        // ===== SCROLL REVEAL =====
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            // Skip hero reveals (handled by preloader)
+            if (!el.closest('#hero')) {
+                revealObserver.observe(el);
+            }
+        });
+
+        // ===== COUNTER ANIMATION =====
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.count);
+                    if (!target) return;
+                    let current = 0;
+                    const increment = target / 60;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        el.textContent = Math.floor(current) + (el.textContent.includes('%') ? '%' : el.textContent.includes('+') ? '+' : '');
+                    }, 25);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
